@@ -1,0 +1,1 @@
+export const asyncObj = promise => promise.then(result => [null, result]).catch(err => [err])
