@@ -27,11 +27,11 @@ function onError(err: NodeJS.ErrnoException): void {
 
   switch (err.code) {
     case "EACCESS":
-      console.error(`You don't have access to ${bind}`);
+      console.error(`You cannot access ${bind}`);
       process.exit(1);
     //if address already in use
     case "EADDRINUSE":
-      console.error(`The address ${bind} is taken. Boohoo for you.`);
+      console.error(`The address ${bind} is taken. `);
       process.exit(1);
     default:
       throw err;
