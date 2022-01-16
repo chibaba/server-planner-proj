@@ -36,6 +36,32 @@ class Planner implements IPlannerServer {
       let costForY = y.CPU + y.HDD + y.HDD
 
       return costForX - costForY
-    })
+    });
+    // to check if a virtual machine can fit a server configuration
+    let vmFit = (prev, curr) => (type) =>
+    prev[type] + curr[type] <=this.serverType[type];
+
+    this.virtualMachine.reduce((prev, curr) => {
+      let fittable = vmFit(prev, curr);
+
+      // if the current virtual machine can fit without having overload, ket increase the capacity
+      if(fittable("HDD") && fittable('CPU') && fittable('RAM')) {
+        this.capacity++;
+
+        return {
+          CPU: prev.CPU + curr.CPU,
+          RAM: prev.RAM + curr.RAM,
+          HDD: prev.HDD + curr.HDD,
+        };
+      }
+      return {
+        CPU: prev.CPU,
+        RAM: prev.RAM,
+        HDD: prev.HDD,
+      };
+    }, initialServerType);
+    return this.capacity
   }
 }
+
+export default Planner;
